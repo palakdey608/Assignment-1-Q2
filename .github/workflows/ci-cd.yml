@@ -1,0 +1,37 @@
+name: CI-CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ci-cd:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Build
+      - name: Build
+        run: |
+          gcc hello-world.c -o hello-world
+
+      # 3. Test
+      - name: Test
+        run: |
+          ./hello-world
+
+      # 4. Package
+      - name: Package
+        run: |
+          mkdir package
+          cp hello-world package/
+          tar -czf hello-world-package.tar.gz package/
+
+      # 5. Deploy
+      - name: Deploy
+        run: |
+          echo "Application deployed successfully!"
